@@ -2,8 +2,6 @@
 
 https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/overview
 
-# House Prices Kaggle Project
-
 ### 1. Data Acquisition
 
 ### 2. Exploratory Data Analysis (EDA)
