@@ -22,7 +22,7 @@ def sale_price(df, name):
     buffer.seek(0)  # reset buffer position
 
     # open workbook and create a new sheet for prices
-    wb = openpyxl.load_workbook(f'data/eda_{name}.xlsx')
+    wb = openpyxl.load_workbook(f'data/eda/eda_{name}.xlsx')
     if "prices" not in wb.sheetnames:
         wb.create_sheet("prices")
     ws = wb["prices"]
@@ -32,7 +32,7 @@ def sale_price(df, name):
     ws.add_image(img, 'A1')
 
     # save the workbook
-    wb.save(f'data/eda_{name}.xlsx')
+    wb.save(f'data/eda/eda_{name}.xlsx')
 
     # clear the buffer
     buffer.close()
@@ -40,7 +40,7 @@ def sale_price(df, name):
 
 ## general info about the data.
 def gen_data(df, name):
-    with pd.ExcelWriter(f'data/eda_{name}.xlsx') as writer:
+    with pd.ExcelWriter(f'data/eda/eda_{name}.xlsx') as writer:
 
         # info sheet
         feature = df.columns
@@ -62,9 +62,15 @@ def gen_data(df, name):
     
 
 def main():
-    train = pd.read_csv('data/train.csv')
-    gen_data(train, "train")
-    sale_price(train, "train")
+    train = pd.read_csv('data/raw/train.csv')
+    test = pd.read_csv("data/raw/test.csv")
+
+    combined = pd.concat([train, test], ignore_index=True)
+    combined = combined.drop(columns = ['SalePrice'])
+
+    gen_data(combined, "combined")
+    sale_price(train, "combined")
 
 if __name__ == '__main__':
     main()
+    print("open data/eda_combined.xlsx to see a summary of the raw data!")
